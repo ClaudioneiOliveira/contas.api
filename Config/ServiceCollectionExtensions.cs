@@ -32,7 +32,7 @@ namespace contas.api.Config
         {
             services.AddDbContextPool<ContasContext>((serviceProvider, optionsBuilder) =>
             {
-                // optionsBuilder.UseSqlServer(configuration.GetConnectionString());
+                //.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
         }
 
