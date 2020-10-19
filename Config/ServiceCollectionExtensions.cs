@@ -2,9 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using contas.api.Domain.Service;
 using contas.api.Infrastructure.Context;
 using contas.api.Service;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,9 +30,9 @@ namespace contas.api.Config
 
         public static void AddAdapters(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContextPool<ContasContext>((serviceProvider, optionsBuilder) =>
+            services.AddDbContext<ContasContext>((serviceProvider, optionsBuilder) =>
             {
-                //.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
         }
 

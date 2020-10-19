@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using contas.api.Domain.Models;
 
-namespace contas.api.Domain.Service
+namespace contas.api.Service
 {
     public interface IContasService
     {

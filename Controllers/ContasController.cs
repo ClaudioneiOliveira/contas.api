@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using contas.api.Domain.Service;
 using contas.api.Domain.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using contas.api.Domain.Models.Exceptions;
+using contas.api.Service;
+using System.ComponentModel.DataAnnotations;
 
 namespace contas.api.Controllers
 {
@@ -27,15 +25,20 @@ namespace contas.api.Controllers
 
         [HttpPost("add")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public ContasListagem AddContas([FromBody] ContasInclusao conta)
-            => contasService.AdicionarContas(conta);
+        [ProducesResponseType(typeof(IEnumerable<ErrorMessage>), 400)]
+        [ProducesResponseType(typeof(IEnumerable<ErrorMessage>), 500)]
+        public IActionResult AddContas([FromBody][Required] ContasInclusao conta)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            else
+                return StatusCode(200, contasService.AdicionarContas(conta));
+        }
 
         [HttpGet("list")]
         [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(IEnumerable<ErrorMessage>), 400)]
+        [ProducesResponseType(typeof(IEnumerable<ErrorMessage>), 500)]
         public IEnumerable<ContasListagem> GetContas()
             => contasService.ListarContas();
     }
